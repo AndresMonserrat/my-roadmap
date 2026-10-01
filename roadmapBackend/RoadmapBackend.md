@@ -1,7 +1,6 @@
 # Roadmap Backend
 
 ## Progreso
-- [x] Fundamentos de programación
 - [x] Git y GitHub
 - [ ] HTTP y APIs REST
 - [ ] Bases de datos SQL
