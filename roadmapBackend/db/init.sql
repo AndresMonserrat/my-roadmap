@@ -3,7 +3,7 @@ CREATE TABLE product (
     nombre VARCHAR(100) NOT NULL,
     precio NUMERIC(10,2) NOT NULL,
     stock INT NOT NULL DEFAULT 0
-)
+);
 
 CREATE TABLE tickets (
   id SERIAL PRIMARY KEY,
@@ -22,7 +22,7 @@ INSERT INTO products (nombre, precio, stock) VALUES
   ('Gorra', 15.00, 5),
   ('Cartera', 100.00, 25),
   ('Boxer', 1500.00, 15);
-  
+
 SELECT * FROM products;
 
 

@@ -3,18 +3,21 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Habilitar pnpm con corepack
-RUN corepack enable
+# 1. Actualizar Corepack a su última versión para evitar errores de verificación
+RUN npm i -g corepack@latest
+
+# 2. Habilitar y preparar la versión de pnpm que necesita tu proyecto
+RUN corepack enable && corepack prepare pnpm@12.8.1 --activate
 
 # Copiar manifiestos primero (mejor caché)
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Instalar TODAS las deps (incluidas dev, para compilar)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile 
 
 # Copiar el resto del código
-COPY tsconfig.json ./
 COPY src ./src
+COPY tsconfig.json ./
 
 # Compilar TypeScript → dist/
 RUN pnpm build
@@ -23,7 +26,8 @@ RUN pnpm build
 FROM node:20-alpine AS runtime
 
 WORKDIR /app
-RUN corepack enable
+RUN npm i -g corepack@latest 
+RUN corepack enable && corepack prepare pnpm@12.8.1 --activate
 
 # Solo dependencias de producción
 COPY package.json pnpm-lock.yaml ./
